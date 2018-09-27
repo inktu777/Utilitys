@@ -33,12 +33,16 @@
 + (void) alertTitle:(NSString *)title
             message:(NSString *)msg
 {
-    [self alertTitle:title message:msg done:@"確定"];
+    [self alertTitle:title
+             message:msg
+                done:NSLocalizedString(@"確定",nil)];
 }
 
 + (void) alertMessage:(NSString *)msg
 {
-    [self alertTitle:AlertTitle message:msg done:@"確定"];
+    [self alertTitle:AlertTitle
+             message:msg
+                done:NSLocalizedString(@"確定",nil)];
 }
 
 + (void)errorAlertDelegate:(UIViewController *)delegate
@@ -817,9 +821,9 @@
 
                  UIAlertController* alert = [UIAlertController
                                              alertControllerWithTitle:AlertTitle
-                                             message:[NSString stringWithFormat:@"已經有更新的版本，請立即下載更新。"]
+                                             message:[NSString stringWithFormat:NSLocalizedString(@"已經有更新的版本，請立即下載更新。",nil)]
                                              preferredStyle:UIAlertControllerStyleAlert];
-                 UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault
+                 UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"確定",nil) style:UIAlertActionStyleDefault
                                                                        handler:^(UIAlertAction * action)
                                                  {
                                                      NSString* appID = @"";//id

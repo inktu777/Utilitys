@@ -202,9 +202,9 @@
 
         UIAlertController* alert = [UIAlertController
                                     alertControllerWithTitle:AlertTitle
-                                    message:[NSString stringWithFormat:@"登入憑證失效，請您再重新登入。"]
+                                    message:[NSString stringWithFormat:NSLocalizedString(@"登入憑證失效，請您再重新登入。",nil)]
                                     preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"確定",nil) style:UIAlertActionStyleDefault
                                                               handler:^(UIAlertAction * action)
                                         {
                                             //singout
@@ -261,9 +261,9 @@
                    completion:^(NSDictionary* result,
                                 NSError* error)
      {
-         if([self checkApTokenError:error]){
+         if([self checkTokenError:error]){
              //reflash
-             [self getApToken_completion:^(BOOL success, NSError *error)
+             [self getToken_completion:^(BOOL success, NSError *error)
              {
                  if(success){
                      [self server_request_json:dataJson

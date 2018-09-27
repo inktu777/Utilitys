@@ -7,7 +7,5 @@
 + (APIMgr*)shared;
 - (void) cancelRequest;
 - (NSString*) getURL:(NSString*)apiPath;
-- (BOOL)chkMTokenError:(NSError*)error;
-- (void)runMTokenError;
 
 @end
