@@ -731,4 +731,132 @@
      }];
 }
 
++ (CALayer *)gradientImageBounds:(CGRect)frame
+                           color:(UIColor*)color
+                         toColor:(UIColor*)toColor
+{
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = frame;
+    gradient.colors = @[(id)color.CGColor,(id)toColor.CGColor];
+    gradient.startPoint = CGPointMake(0.0, 0.0);
+    gradient.endPoint = CGPointMake(1.0, 0.0);
+    return gradient;
+}
+
++ (UIImage *)imageFromLayer:(CALayer *)layer
+{
+    UIGraphicsBeginImageContext([layer frame].size);
+
+    [layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *outputImage = UIGraphicsGetImageFromCurrentImageContext();
+
+    UIGraphicsEndImageContext();
+
+    return outputImage;
+}
+
++ (UIImage *)imageFromView:(UIView *) view
+{
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, [[UIScreen mainScreen] scale]);
+    } else {
+        UIGraphicsBeginImageContext(view.frame.size);
+    }
+    [view.layer renderInContext: UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
++ (void)checkNeedsUpdateVersion:(NSString*)version
+                     completion:(void(^)(BOOL appStoreHasNewerVersion))completion
+{
+    NSArray* appStoreVersionArray = [version componentsSeparatedByString:@"."];
+    NSDictionary* infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    BOOL appStoreHasNewerVersion = NO;
+
+    if (version.length>=5 && appStoreVersionArray.count == 3){
+        NSString* currentVersion = infoDictionary[@"CFBundleShortVersionString"];
+
+        NSArray* currentVersionArray = [currentVersion componentsSeparatedByString:@"."];
+        NSInteger maxDeep = ([appStoreVersionArray count] > [currentVersionArray count])?
+        [appStoreVersionArray count]: [currentVersionArray count];
+        NSInteger minDeep = ([appStoreVersionArray count] > [currentVersionArray count])?
+        [currentVersionArray count]: [appStoreVersionArray count];
+        int i = 0;
+        for( ; i< minDeep ; i++) {
+            if([appStoreVersionArray[i] integerValue]>[currentVersionArray[i] integerValue]) {
+                appStoreHasNewerVersion = YES;
+                break;
+            } else if([appStoreVersionArray[i] integerValue]<[currentVersionArray[i] integerValue]) {
+                appStoreHasNewerVersion = NO;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(appStoreHasNewerVersion);
+                });
+                return;
+            }
+        }
+
+        if(minDeep == i && maxDeep> minDeep) {
+            appStoreHasNewerVersion = YES;
+        }
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        completion(appStoreHasNewerVersion);
+    });
+}
+
++ (void)checkAppVersion:(NSString*)version
+{
+    [self checkNeedsUpdateVersion:version
+                       completion:^(BOOL appStoreHasNewerVersion)
+     {
+         if(appStoreHasNewerVersion){
+             dispatch_async(dispatch_get_main_queue(), ^{
+
+                 UIAlertController* alert = [UIAlertController
+                                             alertControllerWithTitle:AlertTitle
+                                             message:[NSString stringWithFormat:@"已經有更新的版本，請立即下載更新。"]
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                 UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault
+                                                                       handler:^(UIAlertAction * action)
+                                                 {
+                                                     NSString* appID = @"";//id
+                                                     NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"itms-apps://itunes.apple.com/app/id%@", appID]];
+                                                     [[UIApplication sharedApplication]
+                                                      openURL:url
+                                                      options:@{}
+                                                      completionHandler:nil];
+                                                 }];
+
+                 [alert addAction:defaultAction];
+                 [alert show];
+             });
+         }
+     }];
+}
+
++ (BOOL)callPhone:(NSString*)number
+{
+    if(number.length == 0)
+        return NO;
+
+    BOOL isEnable = NO;
+
+    NSString *targetStrig = @"";
+    targetStrig = [@"telprompt://" stringByAppendingString:number];
+    NSURL* url = [NSURL URLWithString:targetStrig];
+
+    if([[UIApplication sharedApplication] canOpenURL:url]){
+        isEnable = YES;
+        [[UIApplication sharedApplication] openURL:url
+                                           options:@{}
+                                 completionHandler:nil];
+    }else{
+        isEnable = NO;
+    }
+    return isEnable;
+}
+
 @end

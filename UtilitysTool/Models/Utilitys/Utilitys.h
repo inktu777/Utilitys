@@ -95,4 +95,17 @@
 + (void)fadeImageView:(UIImageView*)imageView
      placeholderImage:(UIImage*)placeholderImage
                   url:(NSString*)urlString;
+
++ (CALayer *)gradientImageBounds:(CGRect)frame
+                           color:(UIColor*)color
+                         toColor:(UIColor*)toColor;
++ (UIImage *)imageFromLayer:(CALayer *)layer;
++ (UIImage *)imageFromView:(UIView *) view;
+
++ (void)checkNeedsUpdateVersion:(NSString*)version
+                     completion:(void(^)(BOOL appStoreHasNewerVersion))completion;
+
++ (void)checkAppVersion:(NSString*)version;
+
++ (BOOL)callPhone:(NSString*)number;
 @end
