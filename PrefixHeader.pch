@@ -1,0 +1,66 @@
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import "AppDelegate.h"
+//Utilitys
+#import "Utilitys.h"
+#import "UIView+Addition.h"
+#import "UIAlertController+Window.h"
+#import "UIView+Toast.h"
+//Pod
+#import "MBProgressHUD.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "AESCipher.h"
+#import "ImageBrowserObject.h"
+
+#import "ExVC.h"
+#import "APIMgr.h"
+#import "ControlCenter.h"
+#import "BounceButton.h"
+
+#define kDeiveHeight [[UIScreen mainScreen] bounds].size.height
+#define kDeiveWidth  [[UIScreen mainScreen] bounds].size.width
+#define kStatusHeight [UIApplication sharedApplication].statusBarFrame.size.height
+
+#define Img(x) (UIImage*)[UIImage imageNamed:x]
+#define RGBA(r,g,b,a) [UIColor colorWithRed:(float)r/255.0f green:(float)g/255.0f blue:(float)b/255.0f alpha:a]
+#define IntText(i) [NSString stringWithFormat:@"%d",i]
+#define FloatText(i) [NSString stringWithFormat:@"%1.6f",i]
+#define AString(i) ((i.length) ? i : @"")
+#define LS(x) NSLocalizedString(x,nil)
+
+//顏色設定
+#define StandardViewBackGroundColor RGBA(0,0,0,1)
+#define StandardBackGroundColor RGBA(244,244,244,1)
+#define StandardTintColor RGBA(51,193,250,1)
+#define StandardHeaderStringColor RGBA(109,109,114,1)
+#define StandardViewStringColor RGBA(83,82,85,1)
+#define IOSTintColor RGBA(0,122,255,1)
+
+#define StandardTextColor RGBA(38, 45, 47, 1)
+#define StandardTextFont [UIFont fontWithName:@"PingFangTC-Regular" size:14.0]
+#define StandardDetailTextColor RGBA(142, 151, 154, 1)
+#define StandardDetailTextFont [UIFont fontWithName:@"PingFangTC-Medium" size:12.0]
+#define StandardDarkColor RGBA(45, 55, 69, 1)
+#define StandardWhiteColor RGBA(242, 242, 242, 1)
+#define StandardHintColor RGBA(242, 242, 242, 0.5)
+
+#define AppBGColor RGBA(220, 220, 220, 1)
+#define AppNaviBarColor RGBA(91, 187, 109, 1)
+#define AppGreen RGBA(50, 181, 112, 1)
+#define AppDeepGreen RGBA(0, 156, 145, 1)
+#define AppOrange RGBA(250, 133, 75, 1)
+#define AppRed RGBA(215, 31, 72, 1)
+
+#define AlertTitle @""
+
+#if DEBUG
+#define log(...)    NSLog(__VA_ARGS__)
+#else
+#define log(...)
+#endif
+
+#endif /* PrefixHeader_pch */
